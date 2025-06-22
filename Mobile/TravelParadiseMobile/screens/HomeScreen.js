@@ -91,6 +91,7 @@ export default function HomeScreen({ navigation }) {
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
           ListEmptyComponent={<Text>Aucune visite trouvée</Text>}
+          }
         />
       )}
     </View>
