@@ -9,6 +9,17 @@ export default function LoginScreen({ navigation }) {
 
   const handleLogin = async () => {
     try {
+      // Simulation d'une connexion réussie pour les tests
+      if (email && password) {
+        // Simuler un token
+        const mockToken = 'mock-jwt-token-' + Date.now();
+        await AsyncStorage.setItem('token', mockToken);
+        navigation.replace('Home');
+        return;
+      }
+
+      // Code original commenté pour éviter les erreurs réseau
+      /*
       const response = await axios.post('http://<TON_BACKEND>/api/login', {
         email,
         password,
@@ -17,6 +28,7 @@ export default function LoginScreen({ navigation }) {
       const token = response.data.token;
       await AsyncStorage.setItem('token', token);
       navigation.replace('Home');
+      */
     } catch (error) {
       Alert.alert('Erreur', 'Email ou mot de passe invalide');
     }
@@ -25,15 +37,42 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Connexion Guide</Text>
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} style={styles.input} />
-      <TextInput placeholder="Mot de passe" value={password} onChangeText={setPassword} secureTextEntry style={styles.input} />
+      <TextInput 
+        placeholder="Email" 
+        value={email} 
+        onChangeText={setEmail} 
+        style={styles.input}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+      <TextInput 
+        placeholder="Mot de passe" 
+        value={password} 
+        onChangeText={setPassword} 
+        secureTextEntry 
+        style={styles.input} 
+      />
       <Button title="Se connecter" onPress={handleLogin} />
+      <Text style={styles.hint}>
+        Entrez n'importe quel email et mot de passe pour tester
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { padding: 20, flex: 1, justifyContent: 'center' },
-  title: { fontSize: 24, marginBottom: 20 },
-  input: { borderBottomWidth: 1, marginBottom: 20, padding: 10 },
+  title: { fontSize: 24, marginBottom: 20, textAlign: 'center' },
+  input: { 
+    borderBottomWidth: 1, 
+    marginBottom: 20, 
+    padding: 10,
+    borderColor: '#ccc'
+  },
+  hint: {
+    marginTop: 20,
+    textAlign: 'center',
+    color: '#666',
+    fontSize: 12
+  }
 });

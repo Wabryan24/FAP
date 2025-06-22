@@ -4,21 +4,60 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import VisitCard from '../components/VisitCard';
 
+// Données de test pour éviter les erreurs de réseau
+const mockVisites = [
+  {
+    id: 1,
+    lieu: 'Tour Eiffel',
+    pays: 'France',
+    date: '2024-01-15',
+    heureDebut: '14:00',
+    duree: 2,
+    terminee: false,
+    visiteurs: [
+      { nom: 'Martin', prenom: 'Jean' },
+      { nom: 'Durand', prenom: 'Sophie' }
+    ]
+  },
+  {
+    id: 2,
+    lieu: 'Colisée',
+    pays: 'Italie',
+    date: '2024-01-16',
+    heureDebut: '10:00',
+    duree: 3,
+    terminee: true,
+    visiteurs: [
+      { nom: 'Blanc', prenom: 'Pierre' },
+      { nom: 'Rouge', prenom: 'Marie' }
+    ]
+  }
+];
+
 export default function HomeScreen({ navigation }) {
   const [visites, setVisites] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchVisites = async () => {
-    const token = await AsyncStorage.getItem('token');
     try {
+      // Simulation d'un appel API avec des données de test
+      setTimeout(() => {
+        setVisites(mockVisites);
+        setLoading(false);
+      }, 1000);
+      
+      // Code original commenté pour éviter les erreurs réseau
+      /*
+      const token = await AsyncStorage.getItem('token');
       const response = await axios.get('http://<TON_BACKEND>/api/visites', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setVisites(response.data);
+      */
     } catch (error) {
       console.error('Erreur lors de la récupération des visites :', error);
-      Alert.alert("Erreur", "Impossible de charger les visites.");
-    } finally {
+      // Utiliser les données de test en cas d'erreur
+      setVisites(mockVisites);
       setLoading(false);
     }
   };
